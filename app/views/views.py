@@ -6,7 +6,6 @@ import validators
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from app.models.models import Patient, Doctor, DermatologicalProfile, db
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import os
 from sqlalchemy.exc import IntegrityError
@@ -17,6 +16,9 @@ from flask_jwt_extended import get_jwt_identity, get_jwt
 import json
 from app.utils.utils import allowed_file
 import app
+from app.broker.dispatcher import Dispatcher
+
+dispatcher = Dispatcher()
 
 
 class Health(Resource):
@@ -32,6 +34,8 @@ class OrderCreation(Resource):
         data = {
             "message" : "OK"
         }
+
+        dispatcher.publicar_comando(request.json, 'topico-test')
 
         return data, 202
 

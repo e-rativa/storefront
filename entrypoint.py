@@ -4,10 +4,7 @@ from flask_cors import CORS
 from app import create_app
 from flask import jsonify
 from flask_migrate import Migrate
-
-from app.views.views import DoctorRegister, PatientRegister
-from app.views.views import DermatologicalProfileRegister, Health, OrderCreation
-from app.views.views import PatientLogin, DoctorLogin
+from app.views.views import  Health, OrderCreation
 import os
 
 settings_module = os.getenv('APP_SETTINGS_MODULE')
