@@ -26,8 +26,8 @@ class Dispatcher:
     def publicar_comando(self, comando, topico):
         
         payload = CreateOrderPayload(
-            id_producto=str(comando['id_producto'])
-            cantidad_producto=str(comando['cantidad_producto'])
+            id_producto=str(comando['id_producto']),
+            cantidad_producto=str(comando['cantidad_producto']),
             tipo_orden=str(comando['tipo_orden'])
             
         )
