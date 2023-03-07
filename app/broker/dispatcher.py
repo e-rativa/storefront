@@ -15,7 +15,7 @@ def unix_time_millis(dt):
 class Dispatcher:
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://localhost:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(schema))
+        publicador = cliente.create_producer(topico, schema=schema)
         publicador.send(mensaje)
         cliente.close()
 
@@ -32,4 +32,4 @@ class Dispatcher:
             
         )
         comando_integracion = CommandCreateOrder(data=payload)
-        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearReserva))
+        self._publicar_mensaje(comando_integracion, topico, AvroSchema(CommandCreateOrder))

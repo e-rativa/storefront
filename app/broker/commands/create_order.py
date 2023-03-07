@@ -7,6 +7,9 @@ import time
 import os
 import datetime
 
+def time_millis():
+    return int(time.time() * 1000)
+
 class Command(Record):
     id = String(default=str(uuid.uuid4()))
     time = Long()
