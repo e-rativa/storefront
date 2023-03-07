@@ -27,7 +27,7 @@ class CommandCreateOrder(Command):
 HOSTNAME = os.getenv('PULSAR_ADDRESS', default="localhost")
 
 client = pulsar.Client(f'pulsar://{HOSTNAME}:6650')
-consumer = client.subscribe('topico-test', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='sub-notificacion-eventos-reservas', schema=AvroSchema(CommandCreateOrder))
+consumer = client.subscribe('topico-test', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='sub-notificacion-topico-test', schema=AvroSchema(CommandCreateOrder))
 
 while True:
     msg = consumer.receive()
