@@ -20,9 +20,9 @@ class Command(Record):
     service_name = String()
 
 class CreateOrderPayload(Record):
-    id_producto = String()
-    cantidad_producto = String()
-    tipo_orden = String()
+    product_uuid = String()
+    product_quantity = String()
+    order_type = String()
 
 class CommandCreateOrder(Command):
     data = CreateOrderPayload()

@@ -7,12 +7,12 @@ dispatcher = Dispatcher()
 
 class CommandController:
 
-    def OrderCommandCreator(self, comando):
+    def OrderCommandCreator(self, data):
         topico = 'ordenes'
         payload = CreateOrderPayload(
-            id_producto=str(comando['id_producto']),
-            cantidad_producto=str(comando['cantidad_producto']),
-            tipo_orden=str(comando['tipo_orden'])
+            product_uuid=str(data['product_uuid']),
+            product_quantity=str(data['product_quantity']),
+            order_type=str(data['order_type'])
             
         )
         
