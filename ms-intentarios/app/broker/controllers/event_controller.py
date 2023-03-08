@@ -2,13 +2,8 @@
 from app.broker.dispatcher  import Dispatcher
 import pulsar
 from pulsar.schema import *
-from app.broker.events.order_completed import OrderCompletedPayload, EventOrderCompleted
-from app.broker.events.order_started import OrderStartedPayload, EventOrderStarted
 from app.broker.events.product_available import ProductAvailablePayload, EventProductAvailable
 from app.broker.events.product_unavailable import ProductUnavailablePayload, EventProductUnavailable
-from app.broker.events.route_created import RouteCreatedPayload, EventRouteCreated
-from app.broker.events.route_unavailable import RouteUnavailablePayload, EventRouteUnavailable
-
 
 dispatcher = Dispatcher()
 
