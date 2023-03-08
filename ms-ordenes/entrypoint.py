@@ -37,6 +37,14 @@ class CommandCreateOrder(Command):
     data = CreateOrderPayload()
 
 
+class StockValidaterPayload(Record):
+    product_uuid = String()
+    product_quantity = String()
+
+class CommandStockValidate(Command):
+    data = StockValidaterPayload()
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -48,11 +56,14 @@ consumer = client.subscribe('ordenes',
         subscription_name='sub_ordenes_creadas',
         schema=AvroSchema(CommandCreateOrder))
 
+consumer_stock = client.subscribe('productos',
+        consumer_type=_pulsar.ConsumerType.Shared,
+        subscription_name='sub_existencia_productos',
+        schema=AvroSchema(CommandStockValidate))
+
 while True:
     msg = consumer.receive()
-    print('=========================================')
-    print("Mensaje Recibido: '%s'" % msg.value().data)
-    print('=========================================')
+    
 
     if msg.topic_name() == 'persistent://public/default/ordenes':
         print('envia el stock')
@@ -63,8 +74,19 @@ while True:
         }
         commandController.StockCommandValidator(data)
 
-        
-    consumer.acknowledge(msg)
+    msg_stock = consumer_stock.recive()
+    print('=========================================')
+    print("Mensaje Recibido: '%s'" % msg_stock.topic_name())
+    print('=========================================')
+
+    if msg_stock.topic_name() == 'persistent://public/default/productos':
+        print('productos validos')
+        stock_data = msg_stock.value().data
+        data = {
+            'product_uuid' : stock_data.product_uuid,
+            'product_quantity' : stock_data.product_quantity,
+        }
+        commandController.RouteCommandCreate(data)
 
 client.close()
 
