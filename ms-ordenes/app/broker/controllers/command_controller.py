@@ -25,7 +25,7 @@ class CommandController:
 
 
     def StockCommandValidator(self, data):
-        topic = 'inventory/command/validateStock'
+        topic = 'product/command/validateStock'
         payload = StockValidaterPayload(
             order_uuid=str(data['order_uuid']),
             product_uuid=str(data['product_uuid']),
@@ -50,7 +50,7 @@ class CommandController:
 
 
     def ProductCommandPrepare(self, data):
-        topic = 'inventory/command/prepareProduct'
+        topic = 'product/command/prepareProduct'
         payload = PrepareProductPayload(
             order_uuid=str(data['order_uuid']),
             product_uuid=str(data['product_uuid']),
