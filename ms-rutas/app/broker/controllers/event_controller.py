@@ -11,7 +11,7 @@ dispatcher = Dispatcher()
 class EventController:
 
     def RouteCreatedEvent(self, data):
-        topic = 'route/event/created'
+        topic = 'route-event-created'
         payload = RouteCreatedPayload(
             route_uuid = str(data['route_uuid']),
             order_uuid = str(data['order_uuid']),
@@ -23,7 +23,7 @@ class EventController:
         dispatcher._publicar_mensaje(comando_integracion, topic, AvroSchema(EventRouteCreated))
 
     def RouteUnavailableEvent(self, data):
-        topic = 'route/event/unavailable'
+        topic = 'route-event-unavailable'
         payload = RouteUnavailablePayload(
             order_uuid = str(data['order_uuid']),
             product_uuid = str(data['product_uuid']),

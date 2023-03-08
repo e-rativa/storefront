@@ -12,7 +12,7 @@ dispatcher = Dispatcher()
 class CommandController:
 
     def OrderCommandCreator(self, data):
-        topico = 'order/command/create'
+        topico = 'order-command-create'
         payload = CreateOrderPayload(
             product_uuid=str(data['product_uuid']),
             product_quantity=str(data['product_quantity']),
@@ -25,7 +25,7 @@ class CommandController:
 
 
     def StockCommandValidator(self, data):
-        topic = 'product/command/validateStock'
+        topic = 'product-command-validateStock'
         payload = StockValidaterPayload(
             order_uuid=str(data['order_uuid']),
             product_uuid=str(data['product_uuid']),
@@ -37,7 +37,7 @@ class CommandController:
 
 
     def RouteCommandCreate(self, data):
-        topic = 'route/command/create'
+        topic = 'route-command-create'
         payload = CreateRoutePayload(
             order_uuid=str(data['order_uuid']),
             product_uuid=str(data['product_uuid']),
@@ -50,7 +50,7 @@ class CommandController:
 
 
     def ProductCommandPrepare(self, data):
-        topic = 'product/command/prepareProduct'
+        topic = 'product-command-prepareProduct'
         payload = PrepareProductPayload(
             order_uuid=str(data['order_uuid']),
             product_uuid=str(data['product_uuid']),

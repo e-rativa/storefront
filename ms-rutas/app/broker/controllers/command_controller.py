@@ -9,7 +9,7 @@ dispatcher = Dispatcher()
 class CommandController:
 
     def RouteCommandCreate(self, data):
-        topic = 'route/command/create'
+        topic = 'route-command-create'
         payload = CreateRoutePayload(
             order_uuid=str(data['order_uuid']),
             product_uuid=str(data['product_uuid']),

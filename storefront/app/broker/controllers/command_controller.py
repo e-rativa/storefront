@@ -8,7 +8,7 @@ dispatcher = Dispatcher()
 class CommandController:
 
     def OrderCommandCreator(self, data):
-        topico = 'order/command/create'
+        topico = 'order-command-create'
         payload = CreateOrderPayload(
             product_uuid=str(data['product_uuid']),
             product_quantity=str(data['product_quantity']),
