@@ -5,11 +5,10 @@ from pulsar.schema import *
 
 from app.broker.events.event_base import Event
 
-class RouteUnavailablePayload(Record):
+class ProductUnavailablePayload(Record):
     order_uuid = String()
     product_uuid = String()
     product_quantity = String()
-    address = String()
 
-class EventRouteUnavailable(Event):
-    data = RouteUnavailablePayload()
+class EventProductUnavailable(Event):
+    data = ProductUnavailablePayload()

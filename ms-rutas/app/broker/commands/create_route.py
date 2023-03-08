@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-
 import pulsar, _pulsar
 from pulsar.schema import *
 
-from app.broker.events.event_base import Event
+from app.broker.commands.command_base import Command
 
-class RouteUnavailablePayload(Record):
+class CreateRoutePayload(Record):
     order_uuid = String()
     product_uuid = String()
     product_quantity = String()
     address = String()
 
-class EventRouteUnavailable(Event):
-    data = RouteUnavailablePayload()
+class CreateRouteValidate(Command):
+    data = CreateRoutePayload()
