@@ -6,7 +6,7 @@ from pulsar.schema import *
 def time_millis():
     return int(time.time() * 1000)
 
-class Command(Record):
+class Event(Record):
     id = String(default=str(uuid.uuid4()))
     time = Long()
     ingestion = Long(default=time_millis())
