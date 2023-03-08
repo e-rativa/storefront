@@ -1,5 +1,7 @@
 import uuid
 import time
+import pulsar, _pulsar
+from pulsar.schema import *
 
 def time_millis():
     return int(time.time() * 1000)

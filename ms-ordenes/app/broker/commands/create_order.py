@@ -9,6 +9,7 @@ class CreateOrderPayload(Record):
     product_uuid = String()
     product_quantity = String()
     order_type = String()
+    address = String()
 
 class CommandCreateOrder(Command):
     data = CreateOrderPayload()

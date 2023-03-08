@@ -6,6 +6,7 @@ from pulsar.schema import *
 from app.broker.events.event_base import Event
 
 class ProductAvailablePayload(Record):
+    order_uuid = String()
     product_uuid = String()
     product_quantity = String()
 

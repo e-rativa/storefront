@@ -6,6 +6,7 @@ from pulsar.schema import *
 from app.broker.commands.command_base import Command
 
 class PrepareProductPayload(Record):
+    order_uuid = String()
     product_uuid = String()
     product_quantity = String()
 
