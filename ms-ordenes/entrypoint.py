@@ -32,6 +32,7 @@ class CreateOrderPayload(Record):
     product_uuid = String()
     product_quantity = String()
     order_type = String()
+    address = String()
 
 class CommandCreateOrder(Command):
     data = CreateOrderPayload()
@@ -51,42 +52,50 @@ if __name__ == '__main__':
 
 
 client = pulsar.Client('pulsar://localhost:6650')
-consumer = client.subscribe('ordenes',
-        consumer_type=_pulsar.ConsumerType.Shared,
-        subscription_name='sub_ordenes_creadas',
-        schema=AvroSchema(CommandCreateOrder))
 
-consumer_stock = client.subscribe('productos',
-        consumer_type=_pulsar.ConsumerType.Shared,
-        subscription_name='sub_existencia_productos',
-        schema=AvroSchema(CommandStockValidate))
+topics = [
+    {'topic': 'order_command_create', 'subscription': 'sub1', 'schema_type': AvroSchema(CommandCreateOrder)},
+    {'topic': 'productos', 'subscription': 'sub2', 'schema_type': AvroSchema(CommandStockValidate)}
+    ]
 
-while True:
-    msg = consumer.receive()
+consumers = []
+for topic in topics:
+    consumer = client.subscribe(topic=topic['topic'], subscription_name=topic['subscription'], consumer_type=_pulsar.ConsumerType.Shared, schema=topic['schema_type'])
+    consumers.append(consumer)
     
 
-    if msg.topic_name() == 'persistent://public/default/ordenes':
-        print('envia el stock')
-        orden_data = msg.value().data
-        data = {
-            'product_uuid' : orden_data.product_uuid,
-            'product_quantity' : orden_data.product_quantity,
-        }
-        commandController.StockCommandValidator(data)
 
-    msg_stock = consumer_stock.recive()
-    print('=========================================')
-    print("Mensaje Recibido: '%s'" % msg_stock.topic_name())
-    print('=========================================')
+while True:
+    for consumer in consumers:
+        msg = consumer.receive()
+        try:
+            print('=========================================')
+            print("Mensaje Recibido: '%s'" % msg.topic_name())
+            print('=========================================')
 
-    if msg_stock.topic_name() == 'persistent://public/default/productos':
-        print('productos validos')
-        stock_data = msg_stock.value().data
-        data = {
-            'product_uuid' : stock_data.product_uuid,
-            'product_quantity' : stock_data.product_quantity,
-        }
-        commandController.RouteCommandCreate(data)
+            if msg.topic_name() == 'persistent://public/default/order_command_create':
+                print('envia el stock')
+                orden_data = msg.value().data
+                data = {
+                    'product_uuid' : orden_data.product_uuid,
+                    'product_quantity' : orden_data.product_quantity,
+                }
+                commandController.StockCommandValidator(data)
+                consumer.acknowledge(msg)
+
+            if msg.topic_name() == 'persistent://public/default/productos':
+                print('productos validos')
+                stock_data = msg.value().data
+                data = {
+                    'product_uuid' : stock_data.product_uuid,
+                    'product_quantity' : stock_data.product_quantity,
+                }
+                commandController.RouteCommandCreate(data)
+                consumer.acknowledge(msg)
+
+        except:
+            consumer.negative_acknowledge(msg)
+    
 
 client.close()
 
