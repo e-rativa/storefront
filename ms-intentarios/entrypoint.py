@@ -6,6 +6,9 @@ from pulsar.schema import *
 import uuid
 import time
 import os
+from app.broker.controllers.command_controller import CommandController
+
+commandController = CommandController()
 
 settings_module = os.getenv('APP_SETTINGS_MODULE')
 app = create_app(settings_module)
@@ -46,7 +49,17 @@ consumer = client.subscribe('inventarios',
 while True:
     msg = consumer.receive()
     print('=========================================')
-    print("Mensaje Recibido: '%s'" % msg.value().data)
+    print("Mensaje Recibido: '%s'" % msg.topic_name())
     print('=========================================')
+
+    if msg.topic_name() == 'persistent://public/default/inventarios':
+        print('revisa si existe stock')
+        orden_data = msg.value().data
+        data = {
+            'product_uuid' : orden_data.product_uuid,
+            'product_quantity' : orden_data.product_quantity,
+        }
+
+        commandController.ProductCommandExists(data)
 
 
